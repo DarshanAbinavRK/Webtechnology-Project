@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Smart Travel Planning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header & Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-plane"></i>
+                <h1>A Smart Travel Planning</h1>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="index.html" class="active">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#features">
+                        <i class="fas fa-star"></i> Features
+                    </a>
+                </li>
+                <li>
+                    <a href="#search-section">
+                        <i class="fas fa-search"></i> Search
+                    </a>
+                </li>
+                <li>
+                    <a href="#how-it-works">
+                        <i class="fas fa-question-circle"></i> How It Works
+                    </a>
+                </li>
+                <li>
+                    <a href="login.html" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </li>
+                <li>
+                    <a href="login.html" class="signup-btn">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Plan Your Perfect Journey with AI</h2>
+            <p>Smart algorithms create personalized itineraries based on your preferences, budget, and travel style.</p>
+
+            <div class="hero-search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="hero-search" placeholder="Search for countries, cities, or attractions...">
+                    <button class="search-btn">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="login.html" class="btn-primary">
+                    <i class="fas fa-rocket"></i> Start Planning Now
+                </a>
+                <a href="#how-it-works" class="btn-secondary">
+                    <i class="fas fa-play-circle"></i> See How It Works
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Travel Planning">
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section id="search-section" class="search-section">
+        <h2 class="section-title">Search Destinations</h2>
+
+        <div class="search-tools">
+            <div class="search-bar-container">
+                <div class="main-search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="main-search" placeholder="Type country, city, or continent...">
+                    <button id="search-button" class="btn-primary">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+
+                <div class="search-filters">
+                    <select id="continent-filter">
+                        <option value="">All Continents</option>
+                        <option value="Europe">Europe</option>
+                        <option value="Asia">Asia</option>
+                        <option value="North America">North America</option>
+                        <option value="South America">South America</option>
+                        <option value="Africa">Africa</option>
+                        <option value="Oceania">Oceania</option>
+                    </select>
+
+                    <select id="budget-filter">
+                        <option value="">All Budgets</option>
+                        <option value="$">Budget ($)</option>
+                        <option value="$$">Moderate ($$)</option>
+                        <option value="$$$">Luxury ($$$)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="search-results">
+            <h3 id="results-title">Popular Destinations</h3>
+            <div class="results-container" id="results-container">
+                <!-- Results will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2 class="section-title">Smart Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-robot"></i>
+                <h3>AI-Powered Planning</h3>
+                <p>Our intelligent system creates optimized itineraries based on your preferences and constraints.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-dollar-sign"></i>
+                <h3>Budget Optimization</h3>
+                <p>Get the best value for your money with smart budget allocation across flights, hotels, and activities.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-map-marked-alt"></i>
+                <h3>Real-Time Updates</h3>
+                <p>Receive live updates on weather, flight status, and local events affecting your travel plans.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Group Planning</h3>
+                <p>Collaborate with travel companions to create the perfect itinerary for everyone.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <i class="fas fa-user-plus step-icon"></i>
+                <h3>Create Account</h3>
+                <p>Sign up and set your travel preferences</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <i class="fas fa-edit step-icon"></i>
+                <h3>Enter Details</h3>
+                <p>Tell us about your trip: dates, budget, interests</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <i class="fas fa-robot step-icon"></i>
+                <h3>AI Generates Plan</h3>
+                <p>Our system creates a personalized itinerary</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <i class="fas fa-plane-departure step-icon"></i>
+                <h3>Book & Travel</h3>
+                <p>Book directly through our platform and enjoy your trip</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-plane"></i> A Smart Travel Planning</h3>
+                <p>Making travel planning effortless and intelligent since 2024.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-link"></i> Quick Links</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
+                    <li><a href="#search-section"><i class="fas fa-search"></i> Search</a></li>
+                    <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-address-card"></i> Contact Us</h4>
+                <p><i class="fas fa-envelope"></i> info@smarttravelplanning.com</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Travel Street</p>
+                <p>San Francisco, CA 94107</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 A Smart Travel Planning. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="countries.js"></script>
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load all countries initially
+            displayCountries(getAllCountries());
+
+            // Setup search functionality
+            setupSearch();
+
+            // Setup mobile menu
+            setupMobileMenu();
+
+            // Add country cards
+            displayCountryCards();
+        });
+
+        // Display country cards function
+        function displayCountryCards() {
+            const countries = getAllCountries();
+            const container = document.getElementById('results-container');
+
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            countries.forEach(country => {
+                const card = createCountryCard(country);
+                container.appendChild(card);
+            });
+        }
+
+        // Create country card HTML
+        function createCountryCard(country) {
+            const card = document.createElement('div');
+            card.className = 'country-card';
+            card.innerHTML = `
+                <div class="country-flag">${country.flag}</div>
+                <img src="${country.image}" alt="${country.name}" class="country-image">
+                <div class="country-info">
+                    <h3><i class="fas fa-globe-americas"></i> ${country.name}</h3>
+                    <div class="country-details">
+                        <p><i class="fas fa-landmark"></i> <strong>Capital:</strong> ${country.capital}</p>
+                        <p><i class="fas fa-map"></i> <strong>Continent:</strong> ${country.continent}</p>
+                        <p><i class="fas fa-money-bill-wave"></i> <strong>Currency:</strong> ${country.currency}</p>
+                        <p><i class="fas fa-calendar-alt"></i> <strong>Best Time:</strong> ${country.bestTime}</p>
+                        <p><i class="fas fa-dollar-sign"></i> <strong>Average Cost:</strong> ${country.averageCost}</p>
+                    </div>
+                    <div class="country-tags">
+                        <span class="tag"><i class="fas fa-city"></i> ${country.popularCities[0]}</span>
+                        <span class="tag"><i class="fas fa-city"></i> ${country.popularCities[1]}</span>
+                    </div>
+                    <div class="country-actions">
+                        <button class="btn-small btn-primary" onclick="viewCountryDetails(${country.id})">
+                            <i class="fas fa-info-circle"></i> Details
+                        </button>
+                        <button class="btn-small btn-outline" onclick="addToTrip(${country.id})">
+                            <i class="fas fa-plus"></i> Add to Trip
+                        </button>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // Setup search functionality
+        function setupSearch() {
+            const searchButton = document.getElementById('search-button');
+            const mainSearch = document.getElementById('main-search');
+            const continentFilter = document.getElementById('continent-filter');
+            const budgetFilter = document.getElementById('budget-filter');
+
+            if (searchButton) {
+                searchButton.addEventListener('click', performSearch);
+            }
+
+            if (mainSearch) {
+                mainSearch.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') performSearch();
+                });
+            }
+
+            if (continentFilter) {
+                continentFilter.addEventListener('change', performSearch);
+            }
+
+            if (budgetFilter) {
+                budgetFilter.addEventListener('change', performSearch);
+            }
+        }
+
+        // Perform search
+        function performSearch() {
+            const searchTerm = document.getElementById('main-search').value.toLowerCase();
+            const continent = document.getElementById('continent-filter').value;
+            const budget = document.getElementById('budget-filter').value;
+
+            let results = getAllCountries();
+
+            // Filter by search term
+            if (searchTerm) {
+                results = results.filter(country =>
+                    country.name.toLowerCase().includes(searchTerm) ||
+                    country.capital.toLowerCase().includes(searchTerm) ||
+                    country.continent.toLowerCase().includes(searchTerm) ||
+                    country.popularCities.some(city => city.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            // Filter by continent
+            if (continent) {
+                results = results.filter(country => country.continent === continent);
+            }
+
+            // Filter by budget
+            if (budget) {
+                results = results.filter(country => country.averageCost === budget);
+            }
+
+            // Display results
+            displaySearchResults(results);
+
+            // Update results title
+            const resultsTitle = document.getElementById('results-title');
+            if (resultsTitle) {
+                if (searchTerm || continent || budget) {
+                    resultsTitle.textContent = `Search Results (${results.length} found)`;
+                } else {
+                    resultsTitle.textContent = 'Popular Destinations';
+                }
+            }
+        }
+
+        // Display search results
+        function displaySearchResults(countries) {
+            const container = document.getElementById('results-container');
+
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            if (countries.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search fa-3x"></i>
+                        <h3>No destinations found</h3>
+                        <p>Try different search terms or filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            countries.forEach(country => {
+                const card = createCountryCard(country);
+                container.appendChild(card);
+            });
+        }
+
+        // Setup mobile menu
+        function setupMobileMenu() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    if (navLinks.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+        }
+
+        // Global functions for buttons
+        window.viewCountryDetails = function(countryId) {
+            const country = getCountryById(countryId);
+            if (country) {
+                alert(`Viewing details for ${country.name}:\n\n` +
+                    `Capital: ${country.capital}\n` +
+                    `Continent: ${country.continent}\n` +
+                    `Currency: ${country.currency}\n` +
+                    `Best Time to Visit: ${country.bestTime}\n` +
+                    `Popular Cities: ${country.popularCities.join(', ')}\n` +
+                    `Description: ${country.description}`);
+            }
+        };
+
+        window.addToTrip = function(countryId) {
+            const country = getCountryById(countryId);
+            if (country) {
+                // Check if user is logged in
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+                if (isLoggedIn) {
+                    // Add to trip in localStorage
+                    let trips = JSON.parse(localStorage.getItem('userTrips') || '[]');
+                    trips.push({
+                        countryId: countryId,
+                        countryName: country.name,
+                        addedAt: new Date().toISOString(),
+                        status: 'planning'
+                    });
+                    localStorage.setItem('userTrips', JSON.stringify(trips));
+
+                    alert(`✓ Added ${country.name} to your trip!`);
+                } else {
+                    alert(`Please login to add ${country.name} to your trip`);
+                }
+            }
+        };
+
+        // Display all countries initially
+        function displayCountries(countries) {
+            // This function is now handled by displayCountryCards
+        }
+    </script>
+</body>
+
+</html>

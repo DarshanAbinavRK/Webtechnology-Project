@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - A Smart Travel Planning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-plane"></i>
+                <h2>Smart Travel</h2>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar-large">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 id="user-name">Traveler</h3>
+                <p id="user-email">user@example.com</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="active">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="index.html#search-section">
+                    <i class="fas fa-search"></i> Find Destinations
+                </a>
+                <a href="#my-trips">
+                    <i class="fas fa-suitcase"></i> My Trips
+                </a>
+                <a href="#itineraries">
+                    <i class="fas fa-calendar-alt"></i> Itineraries
+                </a>
+                <a href="#saved">
+                    <i class="fas fa-heart"></i> Saved Places
+                </a>
+                <a href="#settings">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search trips, destinations...">
+                </div>
+                <div class="header-actions">
+                    <button class="btn-notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="btn-new-trip" onclick="createNewTrip()">
+                        <i class="fas fa-plus"></i> New Trip
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <h1>Travel Dashboard</h1>
+                <p class="dashboard-subtitle">Welcome back! Here's an overview of your travel plans.</p>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-suitcase"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="trips-count">0</h3>
+                            <p>Active Trips</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="destinations-count">0</h3>
+                            <p>Destinations</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="days-count">0</h3>
+                            <p>Days Planned</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="budget-count">$0</h3>
+                            <p>Total Budget</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Trips Section -->
+                <section id="my-trips" class="dashboard-section">
+                    <div class="section-header">
+                        <h2>My Trips</h2>
+                        <a href="index.html#search-section" class="btn-primary">
+                            <i class="fas fa-plus"></i> Add Trip
+                        </a>
+                    </div>
+                    <div id="user-trips" class="user-trips">
+                        <!-- Trips will be loaded here by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="dashboard-section">
+                    <h2>Quick Actions</h2>
+                    <div class="quick-actions">
+                        <div class="actions-grid">
+                            <a href="#" class="action-card" onclick="planNewTrip()">
+                                <i class="fas fa-plus-circle"></i>
+                                <h3>Plan New Trip</h3>
+                                <p>Create a new travel itinerary</p>
+                            </a>
+                            <a href="index.html#search-section" class="action-card">
+                                <i class="fas fa-search"></i>
+                                <h3>Explore Destinations</h3>
+                                <p>Discover new places to visit</p>
+                            </a>
+                            <a href="#" class="action-card" onclick="manageBudget()">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <h3>Budget Planner</h3>
+                                <p>Manage your travel expenses</p>
+                            </a>
+                            <a href="#" class="action-card" onclick="viewTravelTips()">
+                                <i class="fas fa-lightbulb"></i>
+                                <h3>Travel Tips</h3>
+                                <p>Smart travel advice</p>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Travel Tips -->
+                <section class="dashboard-section">
+                    <h2>Smart Travel Tips</h2>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Best Time to Book</h3>
+                            <p>Book flights 6-8 weeks in advance for domestic trips and 3-4 months for international.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <h3>Budget Smart</h3>
+                            <p>Allocate 50% to accommodation, 30% to activities, and 20% to food for optimal budgeting.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-passport"></i>
+                            <h3>Document Checklist</h3>
+                            <p>Always carry copies of passport, visa, travel insurance, and emergency contacts.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="countries.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Dashboard specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update stats
+            updateDashboardStats();
+
+            // Load user trips
+            loadUserTrips();
+
+            // Logout functionality
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    showNotification('Logged out successfully!', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                });
+            }
+
+            // Notification button
+            const notificationBtn = document.querySelector('.btn-notification');
+            if (notificationBtn) {
+                notificationBtn.addEventListener('click', function() {
+                    showNotifications();
+                });
+            }
+        });
+
+        function updateDashboardStats() {
+            const trips = JSON.parse(localStorage.getItem('userTrips') || '[]');
+
+            // Update trips count
+            document.getElementById('trips-count').textContent = trips.length;
+
+            // Update destinations count (unique countries)
+            const uniqueCountries = [...new Set(trips.map(trip => trip.countryId))];
+            document.getElementById('destinations-count').textContent = uniqueCountries.length;
+
+            // Update days count
+            const totalDays = trips.length * 7; // Assuming 7 days per trip
+            document.getElementById('days-count').textContent = totalDays;
+
+            // Update budget count
+            const totalBudget = trips.length * 1500; // Assuming $1500 per trip
+            document.getElementById('budget-count').textContent = `$${totalBudget}`;
+        }
+
+        function createNewTrip() {
+            showNotification('Opening trip planner...', 'info');
+            setTimeout(() => {
+                window.location.href = 'index.html#search-section';
+            }, 500);
+        }
+
+        function planNewTrip() {
+            const countryName = prompt('Where would you like to go?');
+            if (countryName) {
+                showNotification(`Starting trip planning for ${countryName}`, 'success');
+                // In a real app, this would open the trip planner
+                setTimeout(() => {
+                    alert(`Trip planning interface for ${countryName} would open here.`);
+                }, 1000);
+            }
+        }
+
+        function manageBudget() {
+            alert('Budget Management Interface\n\nThis would include:\n• Total budget allocation\n• Expense tracking\n• Currency conversion\n• Daily spending limits\n• Receipt scanning');
+        }
+
+        function viewTravelTips() {
+            alert('Travel Tips & Advice\n\n• Pack light and use packing cubes\n• Always have a backup plan\n• Learn basic local phrases\n• Keep digital copies of important documents\n• Stay hydrated during flights\n• Use travel apps for navigation\n• Get travel insurance\n• Respect local customs and traditions');
+        }
+
+        function showNotifications() {
+            const notifications = [{
+                id: 1,
+                title: 'Flight Alert',
+                message: 'Check-in opens for your Paris trip in 24 hours',
+                time: '2 hours ago'
+            }, {
+                id: 2,
+                title: 'Weather Update',
+                message: 'Sunny weather expected in Tokyo next week',
+                time: '1 day ago'
+            }, {
+                id: 3,
+                title: 'Special Offer',
+                message: '20% off hotels in Barcelona this month',
+                time: '2 days ago'
+            }];
+
+            const notificationsHTML = notifications.map(notif => `
+                <div class="notification-item">
+                    <h4>${notif.title}</h4>
+                    <p>${notif.message}</p>
+                    <small>${notif.time}</small>
+                </div>
+            `).join('');
+
+            // Create notification panel
+            const panel = document.createElement('div');
+            panel.className = 'notifications-panel';
+            panel.innerHTML = `
+                <div class="notifications-header">
+                    <h3>Notifications</h3>
+                    <button class="close-panel"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="notifications-list">
+                    ${notificationsHTML}
+                </div>
+            `;
+
+            document.body.appendChild(panel);
+
+            // Add styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .notifications-panel {
+                    position: fixed;
+                    top: 70px;
+                    right: 20px;
+                    background: white;
+                    border-radius: 10px;
+                    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                    width: 350px;
+                    z-index: 2000;
+                }
+                .notifications-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1rem;
+                    border-bottom: 1px solid #eee;
+                }
+                .close-panel {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    color: #666;
+                }
+                .notifications-list {
+                    max-height: 400px;
+                    overflow-y: auto;
+                }
+                .notification-item {
+                    padding: 1rem;
+                    border-bottom: 1px solid #f8f9fa;
+                }
+                .notification-item:hover {
+                    background: #f8f9fa;
+                }
+                .notification-item h4 {
+                    color: #1a237e;
+                    margin-bottom: 0.5rem;
+                }
+                .notification-item small {
+                    color: #666;
+                    font-size: 0.8rem;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Close panel functionality
+            panel.querySelector('.close-panel').addEventListener('click', function() {
+                panel.remove();
+                style.remove();
+            });
+
+            // Close when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closePanel(e) {
+                    if (!panel.contains(e.target) && e.target !== document.querySelector('.btn-notification')) {
+                        panel.remove();
+                        style.remove();
+                        document.removeEventListener('click', closePanel);
+                    }
+                });
+            }, 100);
+        }
+    </script>
+</body>
+
+</html>
