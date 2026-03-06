@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Itineraries - Smart Travel Planning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Itineraries Page Specific Styles */
+        .itineraries-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .itineraries-nav {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1a237e;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .nav-logo i {
+            color: #4fc3f7;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-links a.active {
+            background: #4fc3f7;
+            color: white;
+        }
+
+        .itineraries-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .page-header h1 {
+            color: #1a237e;
+            font-size: 32px;
+        }
+
+        .page-header h1 i {
+            color: #4fc3f7;
+            margin-right: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .create-btn {
+            background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .create-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+        }
+
+        .itinerary-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        .itinerary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .stat-info h3 {
+            font-size: 24px;
+            color: #1a237e;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .itinerary-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .itinerary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .itinerary-header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .itinerary-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .itinerary-title h2 {
+            font-size: 22px;
+        }
+
+        .itinerary-title i {
+            color: #4fc3f7;
+        }
+
+        .itinerary-status {
+            background: #4fc3f7;
+            color: #1a237e;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .itinerary-dates {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .itinerary-progress {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #1a237e);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .itinerary-content {
+            padding: 20px;
+        }
+
+        .day-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .day-tab {
+            padding: 8px 20px;
+            background: #f0f0f0;
+            border-radius: 30px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 14px;
+        }
+
+        .day-tab:hover {
+            background: #e0e0e0;
+        }
+
+        .day-tab.active {
+            background: #4fc3f7;
+            color: white;
+        }
+
+        .day-content {
+            display: none;
+        }
+
+        .day-content.active {
+            display: block;
+        }
+
+        .activities-list {
+            margin-bottom: 20px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .activity-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-time {
+            background: #4fc3f7;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-details h4 {
+            color: #1a237e;
+            margin-bottom: 3px;
+            font-size: 16px;
+        }
+
+        .activity-details p {
+            color: #666;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .activity-details p i {
+            color: #4fc3f7;
+            font-size: 12px;
+        }
+
+        .activity-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status-confirmed {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-pending {
+            background: #FFC107;
+            color: #333;
+        }
+
+        .status-booked {
+            background: #2196F3;
+            color: white;
+        }
+
+        .add-activity-btn {
+            width: 100%;
+            padding: 12px;
+            background: none;
+            border: 2px dashed #4fc3f7;
+            border-radius: 8px;
+            color: #4fc3f7;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .add-activity-btn:hover {
+            background: #4fc3f7;
+            color: white;
+        }
+
+        .itinerary-footer {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .itinerary-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #4fc3f7;
+            color: white;
+        }
+
+        .btn-share {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .itinerary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .templates-section {
+            margin-top: 40px;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .template-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .template-image {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .template-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 35, 126, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .template-card:hover .template-overlay {
+            opacity: 1;
+        }
+
+        .template-overlay span {
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .template-info {
+            padding: 15px;
+        }
+
+        .template-info h3 {
+            color: #1a237e;
+            margin-bottom: 5px;
+        }
+
+        .template-info p {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .template-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .template-tag {
+            background: #e3f2fd;
+            color: #1a237e;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .create-itinerary-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .create-itinerary-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            color: #1a237e;
+            font-size: 22px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 60px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .empty-state p {
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            border-left: 4px solid #4fc3f7;
+        }
+
+        .notification-toast.show {
+            transform: translateX(0);
+        }
+
+        .notification-toast.success {
+            border-left-color: #4CAF50;
+        }
+
+        .notification-toast.success i {
+            color: #4CAF50;
+        }
+
+        .notification-toast.error {
+            border-left-color: #dc3545;
+        }
+
+        .notification-toast.error i {
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                width: 100%;
+            }
+            
+            .create-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .itinerary-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .itinerary-footer {
+                flex-wrap: wrap;
+            }
+            
+            .itinerary-btn {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .day-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .day-tab {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body class="itineraries-page">
+    <!-- Navigation -->
+    <nav class="itineraries-nav">
+        <a href="dashboard.html" class="nav-logo">
+            <i class="fas fa-plane"></i>
+            <span>Smart Travel</span>
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="itineraries.html" class="active"><i class="fas fa-calendar-alt"></i> Itineraries</a>
+            <a href="saved.html"><i class="fas fa-heart"></i> Saved</a>
+            <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+        </div>
+    </nav>
+
+    <div class="itineraries-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-calendar-alt"></i> My Itineraries</h1>
+            <div class="header-actions">
+                <button class="create-btn" onclick="showCreateModal()">
+                    <i class="fas fa-plus"></i> Create New Itinerary
+                </button>
+            </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="itinerary-filters">
+            <div class="filter-group">
+                <input type="text" id="searchItinerary" placeholder="Search itineraries..." onkeyup="filterItineraries()">
+            </div>
+            <div class="filter-group">
+                <select id="statusFilter" onchange="filterItineraries()">
+                    <option value="all">All Status</option>
+                    <option value="planning">Planning</option>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="sortFilter" onchange="filterItineraries()">
+                    <option value="date">Sort by Date</option>
+                    <option value="name">Sort by Name</option>
+                    <option value="progress">Sort by Progress</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="itinerary-stats" id="itineraryStats">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalItineraries">0</h3>
+                    <p>Total Itineraries</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3 id="activeItineraries">0</h3>
+                    <p>Active</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="completedItineraries">0</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalDays">0</h3>
+                    <p>Total Days</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Itineraries List -->
+        <div id="itinerariesList"></div>
+
+        <!-- Templates Section -->
+        <div class="templates-section">
+            <h2 style="color: #1a237e; margin-bottom: 20px;">Popular Templates</h2>
+            <div class="templates-grid">
+                <div class="template-card" onclick="useTemplate('beach')">
+                    <div class="template-image" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                        <div class="template-overlay">
+                            <span><i class="fas fa-plus"></i> Use Template</span>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Beach Paradise</h3>
+                        <p>7-day tropical getaway itinerary</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Beach</span>
+                            <span class="template-tag">Relaxation</span>
+                            <span class="template-tag">7 Days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="template-card" onclick="useTemplate('city')">
+                    <div class="template-image" style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                        <div class="template-overlay">
+                            <span><i class="fas fa-plus"></i> Use Template</span>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>City Explorer</h3>
+                        <p>5-day metropolitan adventure</p>
+                        <div class="template-tags">
+                            <span class="template-tag">City</span>
+                            <span class="template-tag">Culture</span>
+                            <span class="template-tag">5 Days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="template-card" onclick="useTemplate('adventure')">
+                    <div class="template-image" style="background-image: url('https://images.unsplash.com/photo-1533240332314-0db49b9adcd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                        <div class="template-overlay">
+                            <span><i class="fas fa-plus"></i> Use Template</span>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Mountain Adventure</h3>
+                        <p>10-day hiking expedition</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Adventure</span>
+                            <span class="template-tag">Hiking</span>
+                            <span class="template-tag">10 Days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="template-card" onclick="useTemplate('cultural')">
+                    <div class="template-image" style="background-image: url('https://images.unsplash.com/photo-1523906834658-6e24e2384f88?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                        <div class="template-overlay">
+                            <span><i class="fas fa-plus"></i> Use Template</span>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Cultural Tour</h3>
+                        <p>7-day heritage exploration</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Culture</span>
+                            <span class="template-tag">History</span>
+                            <span class="template-tag">7 Days</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Itinerary Modal -->
+    <div class="create-itinerary-modal" id="createModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Itinerary</h2>
+                <button class="close-modal" onclick="hideCreateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="createItineraryForm">
+                    <div class="form-group">
+                        <label>Itinerary Name</label>
+                        <input type="text" id="itineraryName" placeholder="e.g., Summer in Paris" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Destination</label>
+                        <input type="text" id="destination" placeholder="e.g., Paris, France" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" id="endDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Travel Style</label>
+                        <select id="travelStyle">
+                            <option value="relaxed">Relaxed</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="intensive">Intensive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="description" rows="3" placeholder="Brief description of your itinerary..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="itinerary-btn btn-edit" onclick="hideCreateModal()">Cancel</button>
+                <button class="itinerary-btn btn-export" onclick="createItinerary()">Create Itinerary</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load itineraries on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLogin();
+            loadItineraries();
+        });
+
+        function checkLogin() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function loadItineraries() {
+            const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+            
+            // If no itineraries exist, create sample ones
+            if (itineraries.length === 0) {
+                createSampleItineraries();
+            } else {
+                updateStats(itineraries);
+                displayItineraries(itineraries);
+            }
+        }
+
+        function createSampleItineraries() {
+            const sampleItineraries = [
+                {
+                    id: '1',
+                    name: 'Summer in Paris',
+                    destination: 'Paris, France',
+                    startDate: '2024-06-01',
+                    endDate: '2024-06-08',
+                    days: 8,
+                    style: 'moderate',
+                    description: 'Explore the City of Light',
+                    status: 'planning',
+                    progress: 30,
+                    icon: 'city',
+                    activities: generateSampleActivities(8, 'Paris'),
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: '2',
+                    name: 'Beach Paradise Maldives',
+                    destination: 'Maldives',
+                    startDate: '2024-07-15',
+                    endDate: '2024-07-22',
+                    days: 7,
+                    style: 'relaxed',
+                    description: 'Tropical beach getaway',
+                    status: 'active',
+                    progress: 60,
+                    icon: 'umbrella-beach',
+                    activities: generateSampleActivities(7, 'Maldives'),
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: '3',
+                    name: 'Italian Adventure',
+                    destination: 'Rome, Florence, Venice',
+                    startDate: '2024-08-10',
+                    endDate: '2024-08-20',
+                    days: 10,
+                    style: 'intensive',
+                    description: 'Cultural tour of Italy',
+                    status: 'planning',
+                    progress: 15,
+                    icon: 'landmark',
+                    activities: generateSampleActivities(10, 'Italy'),
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            localStorage.setItem('itineraries', JSON.stringify(sampleItineraries));
+            loadItineraries();
+        }
+
+        function generateSampleActivities(days, destination) {
+            const activities = [];
+            
+            // Morning activities by destination
+            const morningActivities = {
+                'Paris': [
+                    { name: 'Breakfast at Café de Flore', location: 'Saint-Germain-des-Prés', status: 'confirmed' },
+                    { name: 'Visit Eiffel Tower', location: 'Champ de Mars', status: 'booked' },
+                    { name: 'Louvre Museum tour', location: 'Louvre', status: 'pending' },
+                    { name: 'Walk along Seine River', location: 'Seine River', status: 'confirmed' },
+                    { name: 'Explore Montmartre', location: 'Montmartre', status: 'pending' }
+                ],
+                'Maldives': [
+                    { name: 'Sunrise yoga on beach', location: 'Beach', status: 'confirmed' },
+                    { name: 'Snorkeling session', location: 'Coral Reef', status: 'booked' },
+                    { name: 'Island exploration', location: 'Local Island', status: 'pending' },
+                    { name: 'Breakfast overwater', location: 'Overwater Villa', status: 'confirmed' },
+                    { name: 'Dolphin watching', location: 'Ocean', status: 'booked' }
+                ],
+                'Italy': [
+                    { name: 'Visit Colosseum', location: 'Rome', status: 'booked' },
+                    { name: 'Breakfast at local cafe', location: 'Piazza Navona', status: 'confirmed' },
+                    { name: 'Vatican Museums tour', location: 'Vatican City', status: 'pending' },
+                    { name: 'Walk through Trastevere', location: 'Trastevere', status: 'confirmed' },
+                    { name: 'Visit Trevi Fountain', location: 'Trevi', status: 'pending' }
+                ]
+            };
+
+            // Afternoon activities
+            const afternoonActivities = {
+                'Paris': [
+                    { name: 'Lunch at Le Jules Verne', location: 'Eiffel Tower', status: 'booked' },
+                    { name: 'Notre-Dame Cathedral', location: 'Île de la Cité', status: 'confirmed' },
+                    { name: 'Shopping on Champs-Élysées', location: 'Champs-Élysées', status: 'pending' },
+                    { name: 'Musée d\'Orsay', location: 'Musée d\'Orsay', status: 'booked' },
+                    { name: 'Luxembourg Gardens', location: 'Luxembourg', status: 'confirmed' }
+                ],
+                'Maldives': [
+                    { name: 'Lunch at beach restaurant', location: 'Beach', status: 'confirmed' },
+                    { name: 'Scuba diving', location: 'Coral Garden', status: 'booked' },
+                    { name: 'Spa treatment', location: 'Spa', status: 'pending' },
+                    { name: 'Kayaking', location: 'Lagoon', status: 'confirmed' },
+                    { name: 'Beach volleyball', location: 'Beach', status: 'pending' }
+                ],
+                'Italy': [
+                    { name: 'Pasta making class', location: 'Trastevere', status: 'booked' },
+                    { name: 'Visit Pantheon', location: 'Rome', status: 'confirmed' },
+                    { name: 'Gelato tasting', location: 'Piazza Navona', status: 'pending' },
+                    { name: 'Roman Forum tour', location: 'Roman Forum', status: 'booked' },
+                    { name: 'Borghese Gallery', location: 'Villa Borghese', status: 'pending' }
+                ]
+            };
+
+            // Evening activities
+            const eveningActivities = {
+                'Paris': [
+                    { name: 'Dinner at Seine River cruise', location: 'Seine River', status: 'confirmed' },
+                    { name: 'Moulin Rouge show', location: 'Pigalle', status: 'booked' },
+                    { name: 'Wine tasting', location: 'Wine Bar', status: 'pending' },
+                    { name: 'Night photography tour', location: 'Sacré-Cœur', status: 'confirmed' },
+                    { name: 'Dinner at Montmartre', location: 'Montmartre', status: 'booked' }
+                ],
+                'Maldives': [
+                    { name: 'Sunset dinner on beach', location: 'Beach', status: 'confirmed' },
+                    { name: 'Night fishing', location: 'Ocean', status: 'booked' },
+                    { name: 'Beach BBQ', location: 'Beach', status: 'pending' },
+                    { name: 'Stargazing', location: 'Observatory', status: 'confirmed' },
+                    { name: 'Live music at bar', location: 'Beach Bar', status: 'pending' }
+                ],
+                'Italy': [
+                    { name: 'Dinner at rooftop restaurant', location: 'Rome', status: 'confirmed' },
+                    { name: 'Evening walk in Trastevere', location: 'Trastevere', status: 'booked' },
+                    { name: 'Opera performance', location: 'Teatro dell\'Opera', status: 'pending' },
+                    { name: 'Night tour of Colosseum', location: 'Colosseum', status: 'confirmed' },
+                    { name: 'Dinner at local trattoria', location: 'Jewish Ghetto', status: 'booked' }
+                ]
+            };
+
+            // Get the appropriate activity sets based on destination
+            const morningSet = morningActivities[destination] || morningActivities['Paris'];
+            const afternoonSet = afternoonActivities[destination] || afternoonActivities['Paris'];
+            const eveningSet = eveningActivities[destination] || eveningActivities['Paris'];
+
+            // Generate activities for each day
+            for (let day = 1; day <= days; day++) {
+                // Morning activity (9 AM)
+                activities.push({
+                    id: `day${day}-morning-${Date.now()}-${Math.random()}`,
+                    day: day,
+                    time: '09:00',
+                    name: morningSet[day % morningSet.length].name,
+                    location: morningSet[day % morningSet.length].location,
+                    status: morningSet[day % morningSet.length].status,
+                    notes: ''
+                });
+
+                // Late morning activity (11 AM) for days with index
+                if (day % 2 === 0) {
+                    activities.push({
+                        id: `day${day}-latemorning-${Date.now()}-${Math.random()}`,
+                        day: day,
+                        time: '11:00',
+                        name: morningSet[(day + 1) % morningSet.length].name,
+                        location: morningSet[(day + 1) % morningSet.length].location,
+                        status: morningSet[(day + 1) % morningSet.length].status,
+                        notes: ''
+                    });
+                }
+
+                // Lunch/Afternoon activity (1 PM)
+                activities.push({
+                    id: `day${day}-afternoon-${Date.now()}-${Math.random()}`,
+                    day: day,
+                    time: '13:00',
+                    name: afternoonSet[day % afternoonSet.length].name,
+                    location: afternoonSet[day % afternoonSet.length].location,
+                    status: afternoonSet[day % afternoonSet.length].status,
+                    notes: ''
+                });
+
+                // Mid-afternoon activity (3 PM) for most days
+                if (day <= days - 1) {
+                    activities.push({
+                        id: `day${day}-midafternoon-${Date.now()}-${Math.random()}`,
+                        day: day,
+                        time: '15:00',
+                        name: afternoonSet[(day + 2) % afternoonSet.length].name,
+                        location: afternoonSet[(day + 2) % afternoonSet.length].location,
+                        status: afternoonSet[(day + 2) % afternoonSet.length].status,
+                        notes: ''
+                    });
+                }
+
+                // Evening activity (7 PM)
+                activities.push({
+                    id: `day${day}-evening-${Date.now()}-${Math.random()}`,
+                    day: day,
+                    time: '19:00',
+                    name: eveningSet[day % eveningSet.length].name,
+                    location: eveningSet[day % eveningSet.length].location,
+                    status: eveningSet[day % eveningSet.length].status,
+                    notes: ''
+                });
+
+                // Late evening activity (9 PM) for days with special events
+                if (day === 1 || day === days || day === Math.floor(days/2)) {
+                    activities.push({
+                        id: `day${day}-lateevening-${Date.now()}-${Math.random()}`,
+                        day: day,
+                        time: '21:00',
+                        name: eveningSet[(day + 3) % eveningSet.length].name,
+                        location: eveningSet[(day + 3) % eveningSet.length].location,
+                        status: 'confirmed',
+                        notes: 'Special event'
+                    });
+                }
+            }
+
+            return activities;
+        }
+
+        function updateStats(itineraries) {
+            document.getElementById('totalItineraries').textContent = itineraries.length;
+            
+            const active = itineraries.filter(i => i.status === 'active').length;
+            const completed = itineraries.filter(i => i.status === 'completed').length;
+            
+            document.getElementById('activeItineraries').textContent = active;
+            document.getElementById('completedItineraries').textContent = completed;
+            
+            const totalDays = itineraries.reduce((sum, it) => sum + (it.days || 0), 0);
+            document.getElementById('totalDays').textContent = totalDays;
+        }
+
+        function displayItineraries(itineraries) {
+            const container = document.getElementById('itinerariesList');
+            
+            if (itineraries.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>No Itineraries Yet</h3>
+                        <p>Create your first itinerary to start planning your trips!</p>
+                        <button class="create-btn" onclick="showCreateModal()">
+                            <i class="fas fa-plus"></i> Create Itinerary
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = itineraries.map(itinerary => {
+                // Group activities by day
+                const activitiesByDay = {};
+                for (let day = 1; day <= itinerary.days; day++) {
+                    activitiesByDay[day] = (itinerary.activities || []).filter(a => a.day === day);
+                }
+
+                return `
+                    <div class="itinerary-card" data-id="${itinerary.id}">
+                        <div class="itinerary-header">
+                            <div class="itinerary-title">
+                                <i class="fas fa-${itinerary.icon || 'calendar'}"></i>
+                                <h2>${itinerary.name}</h2>
+                            </div>
+                            <span class="itinerary-status">${itinerary.status || 'Planning'}</span>
+                            <div class="itinerary-dates">
+                                <i class="fas fa-calendar"></i>
+                                <span>${formatDate(itinerary.startDate)} - ${formatDate(itinerary.endDate)}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="itinerary-progress">
+                            <div class="progress-label">
+                                <span>Planning Progress</span>
+                                <span>${itinerary.progress || 0}%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${itinerary.progress || 0}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="itinerary-content">
+                            <div class="day-tabs" id="tabs-${itinerary.id}">
+                                ${generateDayTabs(itinerary.days, itinerary.id)}
+                            </div>
+
+                            ${generateDayContents(itinerary.id, itinerary.days, activitiesByDay)}
+                        </div>
+
+                        <div class="itinerary-footer">
+                            <button class="itinerary-btn btn-edit" onclick="editItinerary('${itinerary.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="itinerary-btn btn-share" onclick="shareItinerary('${itinerary.id}')">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                            <button class="itinerary-btn btn-export" onclick="exportItinerary('${itinerary.id}')">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button class="itinerary-btn btn-delete" onclick="deleteItinerary('${itinerary.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Activate first day tab for each itinerary
+            itineraries.forEach(itinerary => {
+                activateFirstDay(itinerary.id);
+            });
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'TBD';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function generateDayTabs(days, itineraryId) {
+            let tabs = '';
+            for (let i = 1; i <= days; i++) {
+                tabs += `
+                    <button class="day-tab" data-itinerary="${itineraryId}" data-day="${i}" onclick="switchDay(this, '${itineraryId}', ${i})">
+                        Day ${i}
+                    </button>
+                `;
+            }
+            return tabs;
+        }
+
+        function generateDayContents(itineraryId, days, activitiesByDay) {
+            let contents = '';
+            for (let day = 1; day <= days; day++) {
+                const dayActivities = activitiesByDay[day] || [];
+                // Sort activities by time
+                dayActivities.sort((a, b) => a.time.localeCompare(b.time));
+
+                contents += `
+                    <div id="day-${itineraryId}-${day}" class="day-content" data-itinerary="${itineraryId}" data-day="${day}">
+                        <div class="activities-list">
+                            ${dayActivities.map(activity => `
+                                <div class="activity-item">
+                                    <span class="activity-time">${activity.time}</span>
+                                    <div class="activity-details">
+                                        <h4>${activity.name}</h4>
+                                        <p><i class="fas fa-map-pin"></i> ${activity.location}</p>
+                                        ${activity.notes ? `<p><small>${activity.notes}</small></p>` : ''}
+                                    </div>
+                                    <span class="activity-status status-${activity.status}">${activity.status}</span>
+                                </div>
+                            `).join('')}
+                            
+                            ${dayActivities.length === 0 ? `
+                                <div class="empty-state" style="padding: 30px;">
+                                    <i class="fas fa-calendar-day"></i>
+                                    <h3>No activities planned for Day ${day}</h3>
+                                    <p>Click the button below to add activities</p>
+                                </div>
+                            ` : ''}
+                            
+                            <button class="add-activity-btn" onclick="addActivity('${itineraryId}', ${day})">
+                                <i class="fas fa-plus"></i> Add Activity for Day ${day}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            return contents;
+        }
+
+        function activateFirstDay(itineraryId) {
+            const firstTab = document.querySelector(`.day-tab[data-itinerary="${itineraryId}"][data-day="1"]`);
+            const firstContent = document.getElementById(`day-${itineraryId}-1`);
+            
+            if (firstTab && firstContent) {
+                firstTab.classList.add('active');
+                firstContent.classList.add('active');
+            }
+        }
+
+        function switchDay(element, itineraryId, day) {
+            // Remove active class from all tabs for this itinerary
+            document.querySelectorAll(`.day-tab[data-itinerary="${itineraryId}"]`).forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all day contents for this itinerary
+            document.querySelectorAll(`.day-content[data-itinerary="${itineraryId}"]`).forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Add active class to selected tab and content
+            element.classList.add('active');
+            const content = document.getElementById(`day-${itineraryId}-${day}`);
+            if (content) {
+                content.classList.add('active');
+            }
+        }
+
+        function filterItineraries() {
+            const searchTerm = document.getElementById('searchItinerary').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+
+            let itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+
+            // Filter by search
+            if (searchTerm) {
+                itineraries = itineraries.filter(it => 
+                    it.name.toLowerCase().includes(searchTerm) ||
+                    it.destination.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Filter by status
+            if (status !== 'all') {
+                itineraries = itineraries.filter(it => it.status === status);
+            }
+
+            // Sort
+            if (sort === 'name') {
+                itineraries.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sort === 'progress') {
+                itineraries.sort((a, b) => (b.progress || 0) - (a.progress || 0));
+            } else {
+                itineraries.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+            }
+
+            updateStats(itineraries);
+            displayItineraries(itineraries);
+        }
+
+        function showCreateModal() {
+            document.getElementById('createModal').classList.add('active');
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+            document.getElementById('endDate').value = nextWeek;
+        }
+
+        function hideCreateModal() {
+            document.getElementById('createModal').classList.remove('active');
+            document.getElementById('createItineraryForm').reset();
+        }
+
+        function createItinerary() {
+            const name = document.getElementById('itineraryName').value;
+            const destination = document.getElementById('destination').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const style = document.getElementById('travelStyle').value;
+            const description = document.getElementById('description').value;
+
+            if (!name || !destination || !startDate || !endDate) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+
+            if (days < 1) {
+                alert('End date must be after start date');
+                return;
+            }
+
+            const newItinerary = {
+                id: Date.now().toString(),
+                name: name,
+                destination: destination,
+                startDate: startDate,
+                endDate: endDate,
+                days: days,
+                style: style,
+                description: description,
+                status: 'planning',
+                progress: 0,
+                icon: 'calendar',
+                activities: generateSampleActivities(days, destination.split(',')[0]),
+                createdAt: new Date().toISOString()
+            };
+
+            const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+            itineraries.push(newItinerary);
+            localStorage.setItem('itineraries', JSON.stringify(itineraries));
+
+            hideCreateModal();
+            loadItineraries();
+            showNotification('Itinerary created successfully!', 'success');
+        }
+
+        function useTemplate(type) {
+            let template;
+            let days;
+            switch(type) {
+                case 'beach':
+                    template = {
+                        name: 'Beach Paradise Getaway',
+                        destination: 'Maldives',
+                        days: 7,
+                        style: 'relaxed',
+                        icon: 'umbrella-beach',
+                        description: 'Perfect tropical beach vacation'
+                    };
+                    days = 7;
+                    break;
+                case 'city':
+                    template = {
+                        name: 'European City Explorer',
+                        destination: 'Paris, France',
+                        days: 5,
+                        style: 'moderate',
+                        icon: 'city',
+                        description: 'City cultural tour'
+                    };
+                    days = 5;
+                    break;
+                case 'adventure':
+                    template = {
+                        name: 'Mountain Adventure',
+                        destination: 'Swiss Alps',
+                        days: 10,
+                        style: 'intensive',
+                        icon: 'mountain',
+                        description: 'Hiking and adventure trip'
+                    };
+                    days = 10;
+                    break;
+                case 'cultural':
+                    template = {
+                        name: 'Cultural Heritage Tour',
+                        destination: 'Rome, Italy',
+                        days: 7,
+                        style: 'moderate',
+                        icon: 'landmark',
+                        description: 'Historical and cultural exploration'
+                    };
+                    days = 7;
+                    break;
+            }
+
+            // Fill the create form with template data
+            document.getElementById('itineraryName').value = template.name;
+            document.getElementById('destination').value = template.destination;
+            document.getElementById('travelStyle').value = template.style;
+            document.getElementById('description').value = template.description;
+            
+            // Set dates
+            const today = new Date().toISOString().split('T')[0];
+            const endDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+            document.getElementById('endDate').value = endDate;
+
+            showCreateModal();
+        }
+
+        function editItinerary(id) {
+            const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+            const itinerary = itineraries.find(it => it.id === id);
+            
+            if (itinerary) {
+                // Fill form with itinerary data
+                document.getElementById('itineraryName').value = itinerary.name;
+                document.getElementById('destination').value = itinerary.destination;
+                document.getElementById('startDate').value = itinerary.startDate;
+                document.getElementById('endDate').value = itinerary.endDate;
+                document.getElementById('travelStyle').value = itinerary.style;
+                document.getElementById('description').value = itinerary.description;
+                
+                showCreateModal();
+                
+                // Remove old itinerary
+                const updatedItineraries = itineraries.filter(it => it.id !== id);
+                localStorage.setItem('itineraries', JSON.stringify(updatedItineraries));
+            }
+        }
+
+        function addActivity(itineraryId, day) {
+            const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+            const itinerary = itineraries.find(it => it.id === itineraryId);
+            
+            if (itinerary) {
+                const time = prompt('Enter time (e.g., 10:00):', '10:00');
+                if (!time) return;
+                
+                const name = prompt('Enter activity name:');
+                if (!name) return;
+                
+                const location = prompt('Enter location:');
+                if (!location) return;
+                
+                const newActivity = {
+                    id: `activity-${Date.now()}-${Math.random()}`,
+                    day: day,
+                    time: time,
+                    name: name,
+                    location: location,
+                    status: 'pending',
+                    notes: ''
+                };
+                
+                itinerary.activities.push(newActivity);
+                
+                // Update progress based on number of activities
+                const totalActivities = itinerary.activities.length;
+                const maxActivities = itinerary.days * 4; // Assume average 4 activities per day
+                itinerary.progress = Math.min(100, Math.round((totalActivities / maxActivities) * 100));
+                
+                localStorage.setItem('itineraries', JSON.stringify(itineraries));
+                loadItineraries();
+                showNotification('Activity added successfully!', 'success');
+            }
+        }
+
+        function shareItinerary(id) {
+            const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+            const itinerary = itineraries.find(it => it.id === id);
+            
+            if (itinerary) {
+                const shareText = `Check out my itinerary: ${itinerary.name}\nDestination: ${itinerary.destination}\nDates: ${itinerary.startDate} to ${itinerary.endDate}`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: itinerary.name,
+                        text: shareText,
+                        url: window.location.href
+                    });
+                } else {
+                    navigator.clipboard.writeText(shareText);
+                    showNotification('Itinerary details copied to clipboard!', 'success');
+                }
+            }
+        }
+
+        function exportItinerary(id) {
+            const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+            const itinerary = itineraries.find(it => it.id === id);
+            
+            if (itinerary) {
+                const dataStr = JSON.stringify(itinerary, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = `${itinerary.name.replace(/\s+/g, '_')}_itinerary.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                
+                showNotification('Itinerary exported successfully!', 'success');
+            }
+        }
+
+        function deleteItinerary(id) {
+            if (confirm('Are you sure you want to delete this itinerary?')) {
+                const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+                const updatedItineraries = itineraries.filter(it => it.id !== id);
+                localStorage.setItem('itineraries', JSON.stringify(updatedItineraries));
+                loadItineraries();
+                showNotification('Itinerary deleted successfully', 'success');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification-toast ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>

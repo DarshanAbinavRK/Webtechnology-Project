@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - A Smart Travel Planning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-plane"></i>
+                <h2>Smart Travel</h2>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar-large">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 id="user-name">Traveler</h3>
+                <p id="user-email">user@example.com</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="active">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="index.html#search-section">
+                    <i class="fas fa-search"></i> Find Destinations
+                </a>
+                <a href="itineraries.html">
+                    <i class="fas fa-calendar-alt"></i> Itineraries
+                </a>
+                <a href="saved.html">
+                    <i class="fas fa-heart"></i> Saved Places
+                </a>
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="global-search" placeholder="Search trips, destinations, itineraries...">
+                </div>
+                <div class="header-actions">
+                    <button class="btn-notification" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="btn-new-trip" onclick="createNewTrip()">
+                        <i class="fas fa-plus"></i> New Trip
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <h1>Travel Dashboard</h1>
+                <p class="dashboard-subtitle">Welcome back! Here's an overview of your travel plans.</p>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-suitcase"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="trips-count">0</h3>
+                            <p>Active Trips</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="destinations-count">0</h3>
+                            <p>Destinations</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="itineraries-count">0</h3>
+                            <p>Itineraries</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="saved-count">0</h3>
+                            <p>Saved Places</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Access Cards -->
+                <div class="quick-access">
+                    <div class="actions-grid">
+                        <a href="itineraries.html" class="action-card">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h3>My Itineraries</h3>
+                            <p>View and manage your travel schedules</p>
+                        </a>
+                        <a href="saved.html" class="action-card">
+                            <i class="fas fa-heart"></i>
+                            <h3>Saved Places</h3>
+                            <p>Your favorite destinations</p>
+                        </a>
+                        <a href="settings.html" class="action-card">
+                            <i class="fas fa-cog"></i>
+                            <h3>Settings</h3>
+                            <p>Manage your preferences</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Trips -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Recent Trips</h2>
+                        <a href="index.html#search-section" class="btn-primary">
+                            <i class="fas fa-plus"></i> Plan New Trip
+                        </a>
+                    </div>
+                    <div id="recent-trips" class="recent-trips">
+                        <!-- Recent trips will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Upcoming Itineraries Preview -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Upcoming Itineraries</h2>
+                        <a href="itineraries.html" class="btn-outline">
+                            <i class="fas fa-arrow-right"></i> View All
+                        </a>
+                    </div>
+                    <div id="upcoming-itineraries" class="itineraries-preview">
+                        <!-- Upcoming itineraries preview will be loaded here -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check login status
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Load user data
+            loadUserData();
+            updateDashboardStats();
+            loadRecentTrips();
+            loadUpcomingItineraries();
+
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userData');
+                window.location.href = 'index.html';
+            });
+
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+        });
+
+        function loadUserData() {
+            const userEmail = localStorage.getItem('userEmail');
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            
+            document.getElementById('user-email').textContent = userEmail || 'user@example.com';
+            document.getElementById('user-name').textContent = userData.firstName || 'Traveler';
+        }
+
+        function updateDashboardStats() {
+            const trips = JSON.parse(localStorage.getItem('userTrips') || '[]');
+            const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+            const saved = JSON.parse(localStorage.getItem('savedCountries') || '[]');
+
+            document.getElementById('trips-count').textContent = trips.length;
+            document.getElementById('itineraries-count').textContent = itineraries.length;
+            document.getElementById('saved-count').textContent = saved.length;
+            
+            const uniqueCountries = [...new Set(trips.map(trip => trip.countryName))];
+            document.getElementById('destinations-count').textContent = uniqueCountries.length;
+        }
+
+        function loadRecentTrips() {
+            const trips = JSON.parse(localStorage.getItem('userTrips') || '[]');
+            const container = document.getElementById('recent-trips');
+            
+            if (trips.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-suitcase"></i>
+                        <h3>No trips planned yet</h3>
+                        <p>Start planning your first adventure!</p>
+                        <a href="index.html#search-section" class="btn-primary">Explore Destinations</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const recentTrips = trips.slice(-3).reverse();
+            container.innerHTML = recentTrips.map(trip => `
+                <div class="trip-card">
+                    <h4><i class="fas fa-map-marker-alt"></i> ${trip.countryName || 'Unknown Destination'}</h4>
+                    <p><i class="fas fa-calendar"></i> ${trip.startDate || 'Not set'} - ${trip.endDate || 'Not set'}</p>
+                    <div class="trip-actions">
+                        <button class="view-btn" onclick="viewTripDetails('${trip.countryName}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="edit-btn" onclick="continuePlanning('${trip.countryName}')">
+                            <i class="fas fa-edit"></i> Continue
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadUpcomingItineraries() {
+            const itineraries = JSON.parse(localStorage.getItem('itineraries') || '[]');
+            const container = document.getElementById('upcoming-itineraries');
+            
+            if (itineraries.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>No itineraries yet</h3>
+                        <p>Create your first itinerary to get started</p>
+                        <a href="itineraries.html" class="btn-primary">Create Itinerary</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const upcoming = itineraries.slice(0, 2);
+            container.innerHTML = upcoming.map(it => `
+                <div class="itinerary-preview-card">
+                    <h4><i class="fas fa-${it.icon || 'calendar'}"></i> ${it.name}</h4>
+                    <p><i class="fas fa-map-pin"></i> ${it.destination}</p>
+                    <p><i class="fas fa-calendar"></i> ${it.startDate} - ${it.endDate}</p>
+                    <div class="progress-bar" style="margin: 10px 0;">
+                        <div class="progress-fill" style="width: ${it.progress || 0}%"></div>
+                    </div>
+                    <a href="itineraries.html?id=${it.id}" class="btn-small">View Details</a>
+                </div>
+            `).join('');
+        }
+
+        function createNewTrip() {
+            window.location.href = 'index.html#search-section';
+        }
+
+        function viewTripDetails(countryName) {
+            alert(`Viewing details for ${countryName}`);
+        }
+
+        function continuePlanning(countryName) {
+            alert(`Continue planning your trip to ${countryName}`);
+        }
+    </script>
+</body>
+</html>
